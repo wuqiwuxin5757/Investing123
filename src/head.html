@@ -1,0 +1,60 @@
+<title>息 · Interest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;500;700&family=Noto+Sans+SC:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@300;500&family=Noto+Serif:ital,wght@0,400;1,400&family=Ma+Shan+Zheng&display=swap">
+<style>
+/* Layout: one 16:9 screen floating in a dark auditorium; controls fade in only on intent. */
+:root{
+  --house:#030303;      /* the auditorium */
+  --screen:#000;        /* the frame */
+  --ink:#ece4d4;        /* projected light, warm */
+  --dim:#8a8378;        /* secondary captions */
+  --gold:#d9b46a;       /* the one accent: seed, light, interest */
+  --line:rgba(236,228,212,.16);
+  --f-serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-latin:"Cormorant Garamond","Times New Roman",serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--house);color:var(--ink);font-family:var(--f-serif);overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;box-sizing:border-box}
+#stage{position:relative;width:100%;height:100%;display:grid;place-items:center;background:var(--house)}
+#stage:fullscreen{padding:0}
+#frame{position:relative;aspect-ratio:16/9;width:min(100%,calc((100vh - 8px) * 16 / 9));max-width:100%;background:var(--screen);box-shadow:0 0 120px rgba(0,0,0,.9)}
+#c{display:block;width:100%;height:100%}
+#gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;background:var(--screen);text-align:center;transition:opacity 1.2s ease}
+#gate.gone{opacity:0;pointer-events:none}
+#play{appearance:none;border:1px solid var(--line);background:transparent;color:var(--ink);width:92px;height:92px;border-radius:50%;cursor:pointer;display:grid;place-items:center;transition:border-color .4s,transform .4s}
+#play:hover,#play:focus-visible{border-color:var(--gold);transform:scale(1.04);outline:none}
+#play svg{width:26px;height:26px;margin-left:5px;fill:var(--ink)}
+#play[disabled]{opacity:.35;cursor:wait}
+.note{font-family:var(--f-serif);font-weight:300;font-size:clamp(12px,1.25vw,15px);letter-spacing:.3em;color:var(--dim)}
+.note i{font-family:var(--f-latin);font-style:italic;letter-spacing:.08em;display:block;margin-top:6px}
+#prog{font-family:var(--f-mono);font-size:11px;letter-spacing:.25em;color:var(--dim);font-variant-numeric:tabular-nums;min-height:1em}
+#bar{position:absolute;left:0;right:0;bottom:0;padding:18px 22px calc(14px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:16px;background:linear-gradient(transparent,rgba(0,0,0,.75));opacity:0;transition:opacity .5s;font-family:var(--f-mono);font-size:12px;color:var(--dim)}
+#bar.show{opacity:1}
+#bar button{appearance:none;background:none;border:0;color:var(--ink);cursor:pointer;padding:4px;display:grid;place-items:center}
+#bar button:focus-visible{outline:1px solid var(--gold)}
+#bar svg{width:16px;height:16px;fill:var(--ink)}
+#seek{flex:1;min-width:0;accent-color:var(--gold);height:2px}
+#time{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:520px){#bar{gap:8px;padding:10px 10px calc(8px + env(safe-area-inset-bottom,0px))}.note{letter-spacing:.15em}}
+</style>
+<div id="stage">
+  <div id="frame">
+    <canvas id="c" width="1920" height="1080" aria-label="短片《息》"></canvas>
+    <div id="gate">
+      <button id="play" disabled aria-label="播放"><svg viewBox="0 0 24 24"><path d="M5 3l16 9-16 9z"/></svg></button>
+      <div class="note">请戴上耳机 · 全屏观看<i>headphones on · full screen</i></div>
+      <div id="prog">正在合成配乐</div>
+    </div>
+    <div id="bar">
+      <button id="pp" aria-label="暂停"><svg viewBox="0 0 24 24"><path id="ppi" d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+      <input id="seek" type="range" min="0" max="1000" value="0" aria-label="进度">
+      <span id="time">00:00 / 00:00</span>
+      <button id="fs" aria-label="全屏"><svg viewBox="0 0 24 24"><path d="M3 9V3h6v2H5v4zm12-6h6v6h-2V5h-4zM3 15h2v4h4v2H3zm16 0h2v6h-6v-2h4z"/></svg></button>
+    </div>
+  </div>
+</div>
